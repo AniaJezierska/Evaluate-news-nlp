@@ -33,5 +33,9 @@ module.exports = {
             filename: '[name].css'
         }),
         new WorkboxPlugin.GenerateSW()
-    ]
+    ],
+    output: {
+        libraryTarget: 'var',
+        library: 'Client',
+    },
 }
