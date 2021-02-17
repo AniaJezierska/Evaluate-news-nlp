@@ -16,6 +16,10 @@ const app = express();
 //start directory
 app.use(express.static('dist'));
 
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
 app.use(bodyParser.json());
 
 // cors for cross origin allowance
