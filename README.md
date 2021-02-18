@@ -64,16 +64,6 @@ dotenv.config();
 console.log(`Your API key is ${process.env.API_KEY}`);
 ```
 
-...Not that you would want to do that. This means that our updated API credential settings will look like this:
-
-```javascript
-// set aylien API credentials
-var textapi = new aylien({
-  application_id: process.env.API_ID,
-  application_key: process.env.API_KEY,
-});
-```
-
 - [ ] Go to your `.gitignore` file and add `.env` - this will make sure that we don't push our environment variables to Github! If you forget this step, all of the work we did to protect our API keys was pointless.
 
 ### Step 3: Using the API
