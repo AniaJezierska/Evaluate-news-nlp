@@ -4,8 +4,6 @@ dotenv.config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-var aylien = require('aylien_textapi');
-
 var path = require('path');
 const express = require('express');
 const mockAPIResponse = require('./mockAPI.js');
@@ -25,44 +23,34 @@ app.use(bodyParser.json());
 // cors for cross origin allowance
 app.use(cors());
 
-//set aylien API credentials
-var textapi = new aylien({
-    application_id: process.env.API_ID,
-    application_key: process.env.API_KEY
-});
+//set API
+const apiKey = process.env.API_KEY
+const url = 'https://api.meaningcloud.com/sentiment-2.1?'
 
 console.log(`Your API KEY is ${process.env.API_KEY}`);
 
-let aylienRes = {};
+let apiRes = {};
 
 console.log(__dirname);
+
+app.get('/', function (req, res) {
+    // res.sendFile('dist/index.html')
+    res.sendFile(path.resolve('src/client/views/index.html'))
+})
 
 // designates what port the app will listen to for incoming requests
 app.listen(8081, function () {
     console.log('App listening on port 8081!');
 })
 
+
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse);
 })
 
-app.post('/analyse', function (req, res) {
-    textapi.sentiment({
-        url: req.body.url
-    }, (error, response) => {
-        if (error == null) {
-            aylienRes = {
-                'polarity': response.polarity,
-                'subjectivity': response.subjectivity,
-                'text': response.text,
-                'polarity_confidence': response.polarity_confidence,
-                'subjectivity_confidence': response.subjectivity_confidence
-            }
-            res.send(aylienRes);
-            console.log(aylienRes);
-        } else {
-            console.log('error', error);
-            alert('error');
-        }
-    })
-});
+app.post('/analyse', async function (req, res) {
+    apiRes = req.body.url;
+    const result = await fetch(`${url}key=${appKey}&lang=auto&url=${apiRes}`);
+    const data = await result.json()
+    res.send(data)
+})
